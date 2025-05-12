@@ -3,6 +3,10 @@
 
 #include <raylib.h>
 
-extern const Color teal;
+extern const Color teal1;
+extern const Color teal2;
+extern const Color teal3;
+extern const Color tan1;
+extern const Color green1; 
 
 #endif
