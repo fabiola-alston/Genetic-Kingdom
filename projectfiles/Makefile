@@ -3,7 +3,7 @@ CXXFLAGS = -O2 -Wall -std=c++17
 LDFLAGS = -lraylib -lopengl32 -lgdi32 -lwinmm
 
 TARGET = main
-SRC = main.cpp
+SRC = main.cpp colors.cpp
 
 all: $(TARGET)
 
