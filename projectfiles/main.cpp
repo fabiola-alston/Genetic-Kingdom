@@ -2,7 +2,10 @@
 // cd "/c/Users/Fabiola/Documents/TEC/2025/I Semestre/Algoritmos y estructuras de datos II/II Proyecto/Genetic-Kingdom/projectfiles"
 #include "raylib.h"
 #include "colors.h"
+#include "towers.h"
+#include "enemies.h"
 #include <iostream>
+#include <vector>
 
 const int GRID_SIZE = 25;
 const int BUTTON_SIZE = 34;
@@ -22,8 +25,15 @@ int main() {
     const int GRID_X = (screenWidth/2) - ((CELL_SIZE*GRID_SIZE)/2);
     const int GRID_Y = (screenHeight/2) - (CELL_SIZE*GRID_SIZE/2); 
 
+    // delete later :)
+    int lastPosXClicked = 0;
+    int lastPosYClicked = 0;
+
     InitWindow(screenWidth, screenHeight, "Genetic Kingdom");
     SetTargetFPS(60);
+
+    // tower list
+    std::vector<Tower> towers;
 
     // bridge asset image
     Image bridge = LoadImage("resources/Bridge.png");
@@ -37,10 +47,21 @@ int main() {
     Texture2D gridTexture = LoadTextureFromImage(grid_button);
     UnloadImage(grid_button);
 
+    // grid block hover image
+    Image grid_button_hover = LoadImage("resources/grid_block_hover.png");
+    ImageResize(&grid_button, BUTTON_SIZE, BUTTON_SIZE);
+    Texture2D gridHoverTexture = LoadTextureFromImage(grid_button_hover);
+    UnloadImage(grid_button_hover);
+
+    // show "Choose Tower" menu
+    bool showTowerMenu = false;
+
     while (!WindowShouldClose())
     {
         BeginDrawing();
         ClearBackground(teal1);
+
+        Vector2 mousePos = GetMousePosition();
 
         // main island shadow
         DrawRectangle((screenWidth/2) - ((islandWidth+60)/2), (screenHeight/2) - ((islandHeight+60)/2), islandWidth+60, islandHeight+60, teal2); // shadow 1
@@ -63,7 +84,88 @@ int main() {
             {
                 int x = GRID_X + (col * CELL_SIZE);
                 int y = GRID_Y + (row * CELL_SIZE);
-                DrawTexture(gridTexture, x, y, WHITE);
+                // DrawTexture(gridTexture, x, y, WHITE);
+
+                Rectangle gridButtonRect = {(float)x, (float)y, (float)BUTTON_SIZE, (float)BUTTON_SIZE};
+
+                bool hovered = CheckCollisionPointRec(mousePos, gridButtonRect);
+
+                if (hovered)
+                {
+                    DrawTexture(gridHoverTexture, x, y, WHITE);
+
+                    if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) and showTowerMenu == false)
+                    {
+                        // delete later :)
+                        lastPosXClicked = x;
+                        lastPosYClicked = y;
+                        showTowerMenu = true;
+
+                        // ignore this, it's painful proof i actually coded this thing :') 
+                        // fabi note: so it only lasts a frame, what you should do is a list of towers that need to stay drawn and have them get drawn every frame.
+                    }
+                }
+
+                else 
+                {
+                    DrawTexture(gridTexture, x, y, WHITE);
+                }
+            }
+        }
+
+        for (Tower& t : towers)
+        {
+            t.drawImage();
+            t.moveTower();
+        }
+
+        DrawText(TextFormat("Last X Pos: %d Last Y Pos: %d", lastPosXClicked, lastPosYClicked), 10, 10, 20, WHITE);
+
+        // show tower menu code
+        if (showTowerMenu)
+        {
+            int menuWidth = 200;
+            int menuHeight = 150;
+            int menuX = lastPosXClicked;
+            int menuY = lastPosYClicked;
+
+            DrawRectangle(menuX, menuY, menuWidth, menuHeight, Fade(LIGHTGRAY, 0.95f));
+            DrawRectangleLines(menuX, menuY, menuWidth, menuHeight, DARKGRAY);
+            DrawText("Choose Tower", menuX + 10, menuY + 10, 20, BLACK);
+
+            Rectangle arqueroButton = {(float)menuX + 10, (float)menuY + 40, 180, 25};
+            Rectangle magoButton = {(float)menuX + 10, (float)menuY + 70, 180, 25};
+            Rectangle artilleroButton = {(float)menuX + 10, (float)menuY + 100, 180, 25};
+
+            DrawRectangleRec(arqueroButton, CheckCollisionPointRec(mousePos, arqueroButton) ? SKYBLUE : GRAY);
+            DrawRectangleRec(magoButton, CheckCollisionPointRec(mousePos, magoButton) ? SKYBLUE : GRAY);
+            DrawRectangleRec(artilleroButton, CheckCollisionPointRec(mousePos, artilleroButton) ? SKYBLUE : GRAY);
+
+            DrawText("Arquero (5G)", menuX + 20, menuY + 43, 20, BLACK);
+            DrawText("Mago (10G)", menuX + 20, menuY + 73, 20, BLACK);
+            DrawText("Arquero (15G)", menuX + 20, menuY + 103, 20, BLACK);
+
+            // when respective button gets clicked
+            if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
+            {
+                if (CheckCollisionPointRec(mousePos, arqueroButton))
+                {
+                    Tower tower(1, lastPosXClicked, lastPosYClicked);
+                    towers.emplace_back(tower);
+                    showTowerMenu = false;
+                }
+                else if (CheckCollisionPointRec(mousePos, magoButton))
+                {
+                    Tower tower(2, lastPosXClicked, lastPosYClicked);
+                    towers.emplace_back(tower);
+                    showTowerMenu = false;
+                }
+                else if (CheckCollisionPointRec(mousePos, artilleroButton))
+                {
+                    Tower tower(3, lastPosXClicked, lastPosYClicked);
+                    towers.emplace_back(tower);
+                    showTowerMenu = false;
+                }
             }
         }
 
@@ -72,6 +174,8 @@ int main() {
     }
 
     UnloadTexture(bridgeTexture);
+    UnloadTexture(gridTexture);
+    UnloadTexture(gridHoverTexture);
     CloseWindow();
 
     return 0;
