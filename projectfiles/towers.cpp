@@ -10,6 +10,8 @@ Tower::Tower(int cat,int x, int y)
         setAttributes();
     }
 
+    int Tower::playerGold = 30;
+
     void Tower::setAttributes()
     {
         Image sprite;

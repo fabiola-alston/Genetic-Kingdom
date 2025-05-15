@@ -29,6 +29,9 @@ int main() {
     int lastPosXClicked = 0;
     int lastPosYClicked = 0;
 
+    // player gold variable from tower's variables
+    int playerGold = 30;
+
     InitWindow(screenWidth, screenHeight, "Genetic Kingdom");
     SetTargetFPS(60);
 
@@ -96,9 +99,11 @@ int main() {
 
                     if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) and showTowerMenu == false)
                     {
-                        // delete later :)
+                        // updates last clicked position
                         lastPosXClicked = x;
                         lastPosYClicked = y;
+
+                        // and opens the little menu for the type of tower yayy
                         showTowerMenu = true;
 
                         // ignore this, it's painful proof i actually coded this thing :') 
@@ -120,6 +125,7 @@ int main() {
         }
 
         DrawText(TextFormat("Last X Pos: %d Last Y Pos: %d", lastPosXClicked, lastPosYClicked), 10, 10, 20, WHITE);
+        DrawText(TextFormat("Gold: %d", playerGold), 10, 30, 20, WHITE);
 
         // show tower menu code
         if (showTowerMenu)
@@ -129,21 +135,21 @@ int main() {
             int menuX = lastPosXClicked;
             int menuY = lastPosYClicked;
 
-            DrawRectangle(menuX, menuY, menuWidth, menuHeight, Fade(LIGHTGRAY, 0.95f));
-            DrawRectangleLines(menuX, menuY, menuWidth, menuHeight, DARKGRAY);
-            DrawText("Choose Tower", menuX + 10, menuY + 10, 20, BLACK);
+            DrawRectangle(menuX, menuY, menuWidth, menuHeight, Fade(purple1, 0.95f));
+            DrawRectangleLines(menuX, menuY, menuWidth, menuHeight, purple2);
+            DrawText("Choose Tower", menuX + 10, menuY + 10, 20, WHITE);
 
             Rectangle arqueroButton = {(float)menuX + 10, (float)menuY + 40, 180, 25};
             Rectangle magoButton = {(float)menuX + 10, (float)menuY + 70, 180, 25};
             Rectangle artilleroButton = {(float)menuX + 10, (float)menuY + 100, 180, 25};
 
-            DrawRectangleRec(arqueroButton, CheckCollisionPointRec(mousePos, arqueroButton) ? SKYBLUE : GRAY);
-            DrawRectangleRec(magoButton, CheckCollisionPointRec(mousePos, magoButton) ? SKYBLUE : GRAY);
-            DrawRectangleRec(artilleroButton, CheckCollisionPointRec(mousePos, artilleroButton) ? SKYBLUE : GRAY);
+            DrawRectangleRec(arqueroButton, CheckCollisionPointRec(mousePos, arqueroButton) ? pink1 : purple2);
+            DrawRectangleRec(magoButton, CheckCollisionPointRec(mousePos, magoButton) ? pink1 : purple2);
+            DrawRectangleRec(artilleroButton, CheckCollisionPointRec(mousePos, artilleroButton) ? pink1 : purple2);
 
-            DrawText("Arquero (5G)", menuX + 20, menuY + 43, 20, BLACK);
-            DrawText("Mago (10G)", menuX + 20, menuY + 73, 20, BLACK);
-            DrawText("Arquero (15G)", menuX + 20, menuY + 103, 20, BLACK);
+            DrawText("Arquero (5G)", menuX + 20, menuY + 43, 20, WHITE);
+            DrawText("Mago (10G)", menuX + 20, menuY + 73, 20, WHITE);
+            DrawText("Arquero (15G)", menuX + 20, menuY + 103, 20, WHITE);
 
             // when respective button gets clicked
             if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
@@ -152,22 +158,37 @@ int main() {
                 {
                     Tower tower(1, lastPosXClicked, lastPosYClicked);
                     towers.emplace_back(tower);
+
+                    tower.playerGold -= 5;
+                    playerGold = tower.playerGold;
                     showTowerMenu = false;
                 }
                 else if (CheckCollisionPointRec(mousePos, magoButton))
                 {
                     Tower tower(2, lastPosXClicked, lastPosYClicked);
                     towers.emplace_back(tower);
+
+                    tower.playerGold -= 10;
+                    playerGold = tower.playerGold;
                     showTowerMenu = false;
                 }
                 else if (CheckCollisionPointRec(mousePos, artilleroButton))
                 {
                     Tower tower(3, lastPosXClicked, lastPosYClicked);
                     towers.emplace_back(tower);
+
+                    tower.playerGold -= 15;
+                    playerGold = tower.playerGold;
                     showTowerMenu = false;
                 }
             }
         }
+
+        // NOTE FOR LEAVING OFF
+        // fix gold issue (going into negatives), make a pop up message for insufficient gold ?
+        // ENEMIES class, once you got that go STRAIGHT to genetic algorithm. 
+        // work on tower movement last ig ? make sure they're ranges and attacks work first. 
+        // work on enemy pathfinding a*. 
 
         EndDrawing();
 

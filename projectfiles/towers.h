@@ -18,6 +18,7 @@ class Tower
         int posY;
         Texture2D spriteTex;
         float timer = 0.0f;
+        static int playerGold;
 
         // Constructor
         Tower(int cat, int x, int y);
