@@ -22,7 +22,7 @@ Tower::Tower(int cat,int x, int y)
             sprite = LoadImage("resources/arquero1.png");
             ImageResize(&sprite, 34, 34);
             damage = 5;
-            velocity = 2;
+            velocity = 0;
             timeRegenPower = 60.0f;
             timeRechargeAttack = 2.0f;
             cost = 5;
@@ -36,7 +36,7 @@ Tower::Tower(int cat,int x, int y)
             sprite = LoadImage("resources/mago1.png");
             ImageResize(&sprite, 34, 34);
             damage = 7;
-            velocity = 3;
+            velocity = 0;
             timeRegenPower = 80.0f;
             timeRechargeAttack = 3.0f;
             cost = 10;
@@ -50,7 +50,7 @@ Tower::Tower(int cat,int x, int y)
             sprite = LoadImage("resources/artillero1.png");
             ImageResize(&sprite, 34, 34);
             damage = 10;
-            velocity = 2;
+            velocity = 0;
             timeRegenPower = 100.0f;
             timeRechargeAttack = 5.0f;
             cost = 15;
@@ -86,5 +86,10 @@ Tower::Tower(int cat,int x, int y)
             posX += 38 * velocity;
             timer -= interval;
         }
+    }
+
+    void Tower::upgrade()
+    {
+        level += 1; // obviouslyy gonna fix this later but it's 2:30 a.m. and i want to sleep
     }
 

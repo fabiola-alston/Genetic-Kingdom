@@ -6,6 +6,7 @@
 #include "enemies.h"
 #include <iostream>
 #include <vector>
+#include <algorithm>
 
 const int GRID_SIZE = 25;
 const int BUTTON_SIZE = 34;
@@ -154,33 +155,42 @@ int main() {
             // when respective button gets clicked
             if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
             {
+
+                int selectedType = 0;
+                
+                // arquero
                 if (CheckCollisionPointRec(mousePos, arqueroButton))
                 {
-                    Tower tower(1, lastPosXClicked, lastPosYClicked);
-                    towers.emplace_back(tower);
-
-                    tower.playerGold -= 5;
-                    playerGold = tower.playerGold;
-                    showTowerMenu = false;
+                    selectedType = 1;
                 }
+
+                // mago
                 else if (CheckCollisionPointRec(mousePos, magoButton))
                 {
-                    Tower tower(2, lastPosXClicked, lastPosYClicked);
-                    towers.emplace_back(tower);
-
-                    tower.playerGold -= 10;
-                    playerGold = tower.playerGold;
-                    showTowerMenu = false;
+                    selectedType = 2;
                 }
+
+                // artillero
                 else if (CheckCollisionPointRec(mousePos, artilleroButton))
                 {
-                    Tower tower(3, lastPosXClicked, lastPosYClicked);
-                    towers.emplace_back(tower);
-
-                    tower.playerGold -= 15;
-                    playerGold = tower.playerGold;
-                    showTowerMenu = false;
+                    selectedType = 3;
                 }
+
+                Tower tower(selectedType, lastPosXClicked, lastPosYClicked);
+                tower.playerGold -= 5 * selectedType;
+                playerGold = tower.playerGold;
+                showTowerMenu = false;
+
+                towers.emplace_back(tower);
+
+                // if (std::find(towers.begin(), towers.end(), tower) == towers.end())
+                // {
+                //     towers.emplace_back(tower);
+                // }
+                // else
+                // {
+                //     std::cout << "Already there !!"
+                // }
             }
         }
 

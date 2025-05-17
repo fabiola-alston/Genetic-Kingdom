@@ -19,17 +19,18 @@ class Tower
         Texture2D spriteTex;
         float timer = 0.0f;
         static int playerGold;
-
-        // Constructor
+        int level;
+ 
         Tower(int cat, int x, int y);
 
-        // Destructor
-        //~Tower();
-
-        // Loads the texture based on tower category
-        void setAttributes();
         void drawImage();
         void moveTower();
+        void upgrade();
+
+    private: 
+        void setAttributes();
+
+        // notas: agregar int level = 0; y fn de upgrade !!
 };
 
 #endif
