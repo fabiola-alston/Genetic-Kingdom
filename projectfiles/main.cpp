@@ -153,44 +153,32 @@ int main() {
             DrawText("Arquero (15G)", menuX + 20, menuY + 103, 20, WHITE);
 
             // when respective button gets clicked
-            if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
+             if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
             {
-
-                int selectedType = 0;
-                
-                // arquero
                 if (CheckCollisionPointRec(mousePos, arqueroButton))
                 {
-                    selectedType = 1;
+                    Tower tower(1, lastPosXClicked, lastPosYClicked);
+                    towers.emplace_back(tower);
+                    tower.playerGold -= 5;
+                    playerGold = tower.playerGold;
+                    showTowerMenu = false;
                 }
-
-                // mago
                 else if (CheckCollisionPointRec(mousePos, magoButton))
                 {
-                    selectedType = 2;
+                    Tower tower(2, lastPosXClicked, lastPosYClicked);
+                    towers.emplace_back(tower);
+                    tower.playerGold -= 10;
+                    playerGold = tower.playerGold;
+                    showTowerMenu = false;
                 }
-
-                // artillero
                 else if (CheckCollisionPointRec(mousePos, artilleroButton))
                 {
-                    selectedType = 3;
+                    Tower tower(3, lastPosXClicked, lastPosYClicked);
+                    towers.emplace_back(tower);
+                    tower.playerGold -= 15;
+                    playerGold = tower.playerGold;
+                    showTowerMenu = false;
                 }
-
-                Tower tower(selectedType, lastPosXClicked, lastPosYClicked);
-                tower.playerGold -= 5 * selectedType;
-                playerGold = tower.playerGold;
-                showTowerMenu = false;
-
-                towers.emplace_back(tower);
-
-                // if (std::find(towers.begin(), towers.end(), tower) == towers.end())
-                // {
-                //     towers.emplace_back(tower);
-                // }
-                // else
-                // {
-                //     std::cout << "Already there !!"
-                // }
             }
         }
 
