@@ -13,6 +13,19 @@ const int BUTTON_SIZE = 34;
 const int GAP = 4;
 const int CELL_SIZE = BUTTON_SIZE + GAP;
 
+// for checking if tower already at a position
+bool IsTowerAtPosition(const std::vector<Tower>& towers, int x, int y)
+{
+    for (const Tower& tower : towers)
+    {
+        if (tower.posX == x && tower.posY == y)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
 int main() {
     // screen size
     const int screenWidth = 1920;
@@ -60,6 +73,10 @@ int main() {
     // show "Choose Tower" menu
     bool showTowerMenu = false;
 
+    // show "not enough gold" error
+    bool showGoldWarning = false;
+    float warningTimer = 0.0f;
+
     while (!WindowShouldClose())
     {
         BeginDrawing();
@@ -100,15 +117,25 @@ int main() {
 
                     if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) and showTowerMenu == false)
                     {
-                        // updates last clicked position
-                        lastPosXClicked = x;
-                        lastPosYClicked = y;
+                        if (IsTowerAtPosition(towers, x, y) == false)
+                        {
+                            // updates last clicked position
+                            lastPosXClicked = x;
+                            lastPosYClicked = y;
 
-                        // and opens the little menu for the type of tower yayy
-                        showTowerMenu = true;
+                            // and opens the little menu for the type of tower yayy
+                            showTowerMenu = true;
 
-                        // ignore this, it's painful proof i actually coded this thing :') 
-                        // fabi note: so it only lasts a frame, what you should do is a list of towers that need to stay drawn and have them get drawn every frame.
+                            // ignore this, it's painful proof i actually coded this thing :') 
+                            // fabi note: so it only lasts a frame, what you should do is a list of towers that need to stay drawn and have them get drawn every frame.
+                    
+                        }
+
+                        else
+                        {
+                            // idk play a sound or something here !!
+                            // (for future reference, this is where the action for "tower already placed" goes)
+                        }
                     }
                 }
 
@@ -157,29 +184,80 @@ int main() {
             {
                 if (CheckCollisionPointRec(mousePos, arqueroButton))
                 {
-                    Tower tower(1, lastPosXClicked, lastPosYClicked);
-                    towers.emplace_back(tower);
-                    tower.playerGold -= 5;
-                    playerGold = tower.playerGold;
-                    showTowerMenu = false;
+                    if (playerGold >= 5)
+                    {
+                        Tower tower(1, lastPosXClicked, lastPosYClicked);
+                        towers.emplace_back(tower);
+                        tower.playerGold -= 5;
+                        playerGold = tower.playerGold;
+                        showTowerMenu = false;
+                    }
+
+                    else
+                    {
+                        showGoldWarning = true;
+                        warningTimer = 0.0f;
+                    }
+                    
                 }
                 else if (CheckCollisionPointRec(mousePos, magoButton))
                 {
-                    Tower tower(2, lastPosXClicked, lastPosYClicked);
-                    towers.emplace_back(tower);
-                    tower.playerGold -= 10;
-                    playerGold = tower.playerGold;
-                    showTowerMenu = false;
+                    if (playerGold >= 10)
+                    {
+                        Tower tower(2, lastPosXClicked, lastPosYClicked);
+                        towers.emplace_back(tower);
+                        tower.playerGold -= 10;
+                        playerGold = tower.playerGold;
+                        showTowerMenu = false;
+                    }
+
+                    else 
+                    {
+                        showGoldWarning = true;
+                        warningTimer = 0.0f;
+                    }
+                        
                 }
                 else if (CheckCollisionPointRec(mousePos, artilleroButton))
                 {
-                    Tower tower(3, lastPosXClicked, lastPosYClicked);
-                    towers.emplace_back(tower);
-                    tower.playerGold -= 15;
-                    playerGold = tower.playerGold;
-                    showTowerMenu = false;
+                    if (playerGold >= 15)
+                    {
+                        Tower tower(3, lastPosXClicked, lastPosYClicked);
+                        towers.emplace_back(tower);
+                        tower.playerGold -= 15;
+                        playerGold = tower.playerGold;
+                        showTowerMenu = false;
+                    }
+
+                    else
+                    {
+                        showGoldWarning = true;
+                        warningTimer = 0.0f;
+                    }
+                    
                 }
             }
+        }
+
+        if (showGoldWarning)
+        {
+            warningTimer += GetFrameTime();
+            if (warningTimer > 4.0f)
+            {
+                showGoldWarning = false;
+                warningTimer = 0.0f;
+            }
+
+            float alpha = (warningTimer <= 2.0f) ? 1.0f : 1.0f - (warningTimer - 2.0f) / 2.0f;
+            
+            if (alpha < 0.0f)
+            {
+                alpha = 0.0f;
+            }
+
+            Color warningColor = {255, 0, 0, (unsigned char)(alpha * 255)};
+            DrawRectangle(screenWidth / 2 - 150, screenHeight / 2 - 20, 300, 40, Fade(BLACK, alpha));
+            DrawText("Not enough gold!", screenWidth / 2 - 130, screenHeight / 2 - 10, 30, warningColor);
         }
 
         // NOTE FOR LEAVING OFF
