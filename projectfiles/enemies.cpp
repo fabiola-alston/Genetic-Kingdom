@@ -82,3 +82,11 @@ Enemy::Enemy(int cat)
         DrawTexture(spriteTex, x, y, WHITE);
     }
 
+    void Enemy::move()
+    {
+        if (!onGrid)
+        {
+            posY -= deltaY;
+        }
+    }
+

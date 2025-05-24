@@ -241,6 +241,7 @@ int main() {
 
         if (showGoldWarning)
         {
+            showTowerMenu = false;
             warningTimer += GetFrameTime();
             if (warningTimer > 4.0f)
             {
