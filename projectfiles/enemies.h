@@ -18,9 +18,6 @@ class Enemy
         Texture2D spriteTex;
         bool onGrid = false;
 
-        float pixelsPerSecond = velocity * 38.0f; // translating velocity (blocks per second) to pixels
-        float deltaY = pixelsPerSecond * GetFrameTime(); // making it souper smooooth \(0 O 0)/
-
         Enemy(int cat);
 
         void drawImage(int x, int y);

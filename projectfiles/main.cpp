@@ -52,6 +52,13 @@ int main() {
     // tower list
     std::vector<Tower> towers;
 
+    // enemy list
+    std::vector<Enemy> enemies;
+
+    // enemy spawn timer
+    float enemySpawnTimer = 0.0f;
+    float enemySpawnInterval = 2.0f; // this will spawn an enemy every 2 seconds
+
     // bridge asset image
     Image bridge = LoadImage("resources/Bridge.png");
     ImageResize(&bridge, 100, 134);
@@ -143,13 +150,32 @@ int main() {
                 {
                     DrawTexture(gridTexture, x, y, WHITE);
                 }
+
             }
+        }
+
+        enemySpawnTimer += GetFrameTime();
+        if (enemySpawnTimer >= enemySpawnInterval)
+        {
+            int randomCategory = GetRandomValue(1, 4);
+            Enemy enemy(randomCategory);
+
+            enemy.posX = screenWidth / 2;
+            enemy.posY = -34;
+
+            enemies.emplace_back(enemy);
+            enemySpawnTimer = 0.0f;
+        }
+
+        for (Enemy& e : enemies)
+        {
+            e.move();
+            e.drawImage(e.posX, e.posY);
         }
 
         for (Tower& t : towers)
         {
             t.drawImage();
-            t.moveTower();
         }
 
         DrawText(TextFormat("Last X Pos: %d Last Y Pos: %d", lastPosXClicked, lastPosYClicked), 10, 10, 20, WHITE);

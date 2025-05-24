@@ -79,14 +79,34 @@ Enemy::Enemy(int cat)
 
     void Enemy::drawImage(int x, int y)
     {
-        DrawTexture(spriteTex, x, y, WHITE);
+        if (spriteTex.id > 0)
+        {
+            DrawTexture(spriteTex, x, y, WHITE);
+        }
     }
 
     void Enemy::move()
     {
         if (!onGrid)
         {
+            float pixelsPerSecond = velocity * 38.0f; // translating velocity (blocks per second) to pixels
+            float deltaY = pixelsPerSecond * GetFrameTime(); // making it souper smooooth \(0 O 0)/
+
             posY -= deltaY;
+
+            int gridTop = (1250 / 2) - (1000 / 2);
+
+            if (posY <= gridTop)
+            {
+                onGrid = true; 
+                posY = ((posY - gridTop) / 38) * 38 + gridTop;
+
+                // to - do later : A* path and following it
+            }
+        }
+        else
+        {
+            // to - do : pathfinding movement along grid
         }
     }
 
