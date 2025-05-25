@@ -17,7 +17,7 @@ Enemy::Enemy(int cat)
         if(category == 1)
         {
             sprite = LoadImage("resources/ogro1.png");
-            ImageResize(&sprite, 34, 34);
+            ImageResize(&sprite, 30, 30);
             hp = 25;
             velocity = 1;
             resFlecha = 1;
@@ -31,7 +31,7 @@ Enemy::Enemy(int cat)
         else if (category == 2)
         {
             sprite = LoadImage("resources/elfooscuro1.png");
-            ImageResize(&sprite, 34, 34);
+            ImageResize(&sprite, 30, 30);
             hp = 30;
             velocity = 3;
             resFlecha = 0;
@@ -45,7 +45,7 @@ Enemy::Enemy(int cat)
         else if (category == 3)
         {
             sprite = LoadImage("resources/harpia1.png");
-            ImageResize(&sprite, 34, 34);
+            ImageResize(&sprite, 30, 30);
             hp = 30;
             velocity = 2;
             resFlecha = 1;
@@ -59,7 +59,7 @@ Enemy::Enemy(int cat)
         else if (category == 4)
         {
             sprite = LoadImage("resources/mercenario1.png");
-            ImageResize(&sprite, 34, 34);
+            ImageResize(&sprite, 30, 30);
             hp = 40;
             velocity = 2;
             resFlecha = 0;
@@ -94,7 +94,7 @@ Enemy::Enemy(int cat)
 
             posY -= deltaY;
 
-            int gridTop = (1250 / 2) - (1000 / 2);
+            int gridTop = (900 / 2) - (800 / 2);
 
             if (posY <= gridTop)
             {

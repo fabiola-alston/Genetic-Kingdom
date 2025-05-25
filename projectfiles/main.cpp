@@ -8,9 +8,9 @@
 #include <vector>
 #include <algorithm>
 
-const int GRID_SIZE = 25;
-const int BUTTON_SIZE = 34;
-const int GAP = 4;
+const int GRID_SIZE = 20;
+const int BUTTON_SIZE = 30;
+const int GAP = 3;
 const int CELL_SIZE = BUTTON_SIZE + GAP;
 
 // for checking if tower already at a position
@@ -28,12 +28,12 @@ bool IsTowerAtPosition(const std::vector<Tower>& towers, int x, int y)
 
 int main() {
     // screen size
-    const int screenWidth = 1920;
-    const int screenHeight = 1250;
+    const int screenWidth = 1800;
+    const int screenHeight = 900;
 
     // island dimensions
-    const int islandWidth = 1000;
-    const int islandHeight = 1000;
+    const int islandWidth = 700;
+    const int islandHeight = 700;
 
     // grid dimensions
     const int GRID_X = (screenWidth/2) - ((CELL_SIZE*GRID_SIZE)/2);
@@ -103,7 +103,7 @@ int main() {
 
         // bridges in game
         DrawTexture(bridgeTexture, (screenWidth/2) - (bridgeTexture.width)/2, 0, WHITE);
-        DrawTexture(bridgeTexture, (screenWidth/2) - (bridgeTexture.width)/2, 1116, WHITE);
+        DrawTexture(bridgeTexture, (screenWidth/2) - (bridgeTexture.width)/2, screenHeight - bridgeTexture.height, WHITE);
 
         // draw grid of buttons
         for (int row = 0; row < GRID_SIZE; row++)
@@ -184,26 +184,26 @@ int main() {
         // show tower menu code
         if (showTowerMenu)
         {
-            int menuWidth = 200;
-            int menuHeight = 150;
+            int menuWidth = 160;
+            int menuHeight = 130;
             int menuX = lastPosXClicked;
             int menuY = lastPosYClicked;
 
             DrawRectangle(menuX, menuY, menuWidth, menuHeight, Fade(purple1, 0.95f));
             DrawRectangleLines(menuX, menuY, menuWidth, menuHeight, purple2);
-            DrawText("Choose Tower", menuX + 10, menuY + 10, 20, WHITE);
+            DrawText("Choose Tower", menuX + 10, menuY + 10, 18, WHITE);
 
-            Rectangle arqueroButton = {(float)menuX + 10, (float)menuY + 40, 180, 25};
-            Rectangle magoButton = {(float)menuX + 10, (float)menuY + 70, 180, 25};
-            Rectangle artilleroButton = {(float)menuX + 10, (float)menuY + 100, 180, 25};
+            Rectangle arqueroButton = {(float)menuX + 10, (float)menuY + 40, 140, 20};
+            Rectangle magoButton = {(float)menuX + 10, (float)menuY + 70, 140, 20};
+            Rectangle artilleroButton = {(float)menuX + 10, (float)menuY + 100, 140, 20};
 
             DrawRectangleRec(arqueroButton, CheckCollisionPointRec(mousePos, arqueroButton) ? pink1 : purple2);
             DrawRectangleRec(magoButton, CheckCollisionPointRec(mousePos, magoButton) ? pink1 : purple2);
             DrawRectangleRec(artilleroButton, CheckCollisionPointRec(mousePos, artilleroButton) ? pink1 : purple2);
 
-            DrawText("Arquero (5G)", menuX + 20, menuY + 43, 20, WHITE);
-            DrawText("Mago (10G)", menuX + 20, menuY + 73, 20, WHITE);
-            DrawText("Arquero (15G)", menuX + 20, menuY + 103, 20, WHITE);
+            DrawText("Arquero (5G)", menuX + 20, menuY + 43, 18, WHITE);
+            DrawText("Mago (10G)", menuX + 20, menuY + 73, 18, WHITE);
+            DrawText("Arquero (15G)", menuX + 20, menuY + 103, 18, WHITE);
 
             // when respective button gets clicked
              if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
