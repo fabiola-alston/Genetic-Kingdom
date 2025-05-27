@@ -55,9 +55,17 @@ int main() {
     // enemy list
     std::vector<Enemy> enemies;
 
-    // enemy spawn timer
+    // enemy wave variables !!
+    int currentWave = 0;
+    bool spawningWave = false;
+    float waveCooldownTimer = 0.0f;
+    // this is the time between the waves of enemies
+    float waveDelay = 15.0f;
+    int enemiesPerWave = 10;
+    int enemiesSpawnedCurrWave = 0;
+    // this is how often enemies spawn INSIDE of the wave
+    float enemySpawnInterval = 0.5f; 
     float enemySpawnTimer = 0.0f;
-    float enemySpawnInterval = 2.0f; // this will spawn an enemy every 2 seconds
 
     // bridge asset image
     Image bridge = LoadImage("resources/Bridge.png");
@@ -154,25 +162,59 @@ int main() {
             }
         }
 
-        enemySpawnTimer += GetFrameTime();
-        if (enemySpawnTimer >= enemySpawnInterval)
+        // ENEMY SPAWN CODE
+        if (!spawningWave)
         {
-            int randomCategory = GetRandomValue(1, 4);
-            Enemy enemy(randomCategory);
+            waveCooldownTimer += GetFrameTime(); // starts counting frames until it gets to amount of time indicated
 
-            enemy.posX = screenWidth / 2;
-            enemy.posY = -34;
+            if (waveCooldownTimer >= waveDelay)
+            {
+                spawningWave = true;
+                waveCooldownTimer = 0.0f;
+                enemiesSpawnedCurrWave = 0;
+                currentWave++;
+            }
 
-            enemies.emplace_back(enemy);
-            enemySpawnTimer = 0.0f;
         }
 
+        if (spawningWave)
+        {
+            
+            enemySpawnTimer += GetFrameTime(); // starts counting frames until it gets to the amount of time indicated
+
+            if (enemySpawnTimer >= enemySpawnInterval && enemiesSpawnedCurrWave < enemiesPerWave)
+            {
+                int randomType = GetRandomValue(1, 4);
+                Enemy enemy(randomType);
+
+                enemy.posX = screenWidth / 2;
+                enemy.posY = screenHeight - 10;
+
+                enemies.push_back(enemy);
+
+                enemiesSpawnedCurrWave++;
+                enemySpawnTimer = 0.0f;
+            }
+
+            if (enemiesSpawnedCurrWave >= enemiesPerWave)
+            {
+                spawningWave = false;
+            }
+        }
+
+        // draw stats on game
+        DrawText(TextFormat("Wave #%d currently in process", currentWave), 10, 60, 20, DARKPURPLE);
+        DrawText(TextFormat("Enemies spawned: %d", enemiesSpawnedCurrWave), 10, 80, 20, DARKPURPLE);
+
+
+        // draw each created enemy
         for (Enemy& e : enemies)
         {
             e.move();
             e.drawImage(e.posX, e.posY);
         }
 
+        // similarly, draws each created tower
         for (Tower& t : towers)
         {
             t.drawImage();

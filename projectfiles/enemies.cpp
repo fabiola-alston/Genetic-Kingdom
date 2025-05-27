@@ -89,7 +89,7 @@ Enemy::Enemy(int cat)
     {
         if (!onGrid)
         {
-            float pixelsPerSecond = velocity * 38.0f; // translating velocity (blocks per second) to pixels
+            float pixelsPerSecond = velocity * 33.0f; // translating velocity (blocks per second) to pixels
             float deltaY = pixelsPerSecond * GetFrameTime(); // making it souper smooooth \(0 O 0)/
 
             posY -= deltaY;
@@ -98,8 +98,11 @@ Enemy::Enemy(int cat)
 
             if (posY <= gridTop)
             {
-                onGrid = true; 
-                posY = ((posY - gridTop) / 38) * 38 + gridTop;
+                onGrid = true;
+                DrawText("Enemy on grid", 10, 100, 20, RED); 
+
+                // snap to grid
+                posY = ((posY - gridTop) / 33) * 33 + gridTop;
 
                 // to - do later : A* path and following it
             }
