@@ -2,6 +2,7 @@
 #define ENEMIES_H
 
 #include "raylib.h"
+#include "gridvars.h"
 
 class Enemy
 {

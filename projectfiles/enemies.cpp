@@ -89,27 +89,29 @@ Enemy::Enemy(int cat)
     {
         if (!onGrid)
         {
-            float pixelsPerSecond = velocity * 33.0f; // translating velocity (blocks per second) to pixels
+            float pixelsPerSecond = velocity * static_cast<float>(CELL_SIZE); // translating velocity (blocks (CELL_SIZE) per second (velocity)) to pixels
             float deltaY = pixelsPerSecond * GetFrameTime(); // making it souper smooooth \(0 O 0)/
 
             posY -= deltaY;
 
-            int gridTop = (900 / 2) - (800 / 2);
+            int gridTop = 767; // 767 because the island sprite starts at 800, 800 - 33 which is the cell block size
 
+            // if the enemy hasn't reached the area where the grid starts
             if (posY <= gridTop)
             {
                 onGrid = true;
-                DrawText("Enemy on grid", 10, 100, 20, RED); 
+
+                DrawText("Enemy on grid", 10, 400, 20, RED); 
 
                 // snap to grid
-                posY = ((posY - gridTop) / 33) * 33 + gridTop;
-
-                // to - do later : A* path and following it
+                posY = ((posY - gridTop) / CELL_SIZE) * CELL_SIZE + gridTop;
             }
         }
+
+        // once the enemy reaches the grid area
         else
         {
-            // to - do : pathfinding movement along grid
+
         }
     }
 

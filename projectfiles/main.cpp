@@ -4,14 +4,10 @@
 #include "colors.h"
 #include "towers.h"
 #include "enemies.h"
+#include "gridvars.h"
 #include <iostream>
 #include <vector>
 #include <algorithm>
-
-const int GRID_SIZE = 20;
-const int BUTTON_SIZE = 30;
-const int GAP = 3;
-const int CELL_SIZE = BUTTON_SIZE + GAP;
 
 // for checking if tower already at a position
 bool IsTowerAtPosition(const std::vector<Tower>& towers, int x, int y)
@@ -39,7 +35,11 @@ int main() {
     const int GRID_X = (screenWidth/2) - ((CELL_SIZE*GRID_SIZE)/2);
     const int GRID_Y = (screenHeight/2) - (CELL_SIZE*GRID_SIZE/2); 
 
-    // delete later :)
+    // game timer
+    int gameTimer = 0;
+    float gameFrameTimer = 0.0f;
+
+    // delete later :) (DONT DELETE LATER ANYMORE)
     int lastPosXClicked = 0;
     int lastPosYClicked = 0;
 
@@ -205,6 +205,7 @@ int main() {
         // draw stats on game
         DrawText(TextFormat("Wave #%d currently in process", currentWave), 10, 60, 20, DARKPURPLE);
         DrawText(TextFormat("Enemies spawned: %d", enemiesSpawnedCurrWave), 10, 80, 20, DARKPURPLE);
+        DrawText(TextFormat("Time: %d", gameTimer), 10, 100, 20, DARKPURPLE);
 
 
         // draw each created enemy
@@ -329,11 +330,12 @@ int main() {
             DrawText("Not enough gold!", screenWidth / 2 - 130, screenHeight / 2 - 10, 30, warningColor);
         }
 
-        // NOTE FOR LEAVING OFF
-        // fix gold issue (going into negatives), make a pop up message for insufficient gold ?
-        // ENEMIES class, once you got that go STRAIGHT to genetic algorithm. 
-        // work on tower movement last ig ? make sure they're ranges and attacks work first. 
-        // work on enemy pathfinding a*. 
+        gameFrameTimer += GetFrameTime();
+        if (gameFrameTimer >= 1.0f)
+        {
+            gameTimer++;
+            gameFrameTimer = 0.0f;
+        }
 
         EndDrawing();
 
