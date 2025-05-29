@@ -35,6 +35,9 @@ int main() {
     const int GRID_X = (screenWidth/2) - ((CELL_SIZE*GRID_SIZE)/2);
     const int GRID_Y = (screenHeight/2) - (CELL_SIZE*GRID_SIZE/2); 
 
+    // initialize grid array (from the heather file we made (: ) 
+    InitGridMap();
+
     // game timer
     int gameTimer = 0;
     float gameFrameTimer = 0.0f;
