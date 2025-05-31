@@ -134,14 +134,13 @@ int main() {
                             int col = abs((lastPosXClicked - GRID_X) / CELL_SIZE);
                             int row = abs((lastPosYClicked - GRID_Y) / CELL_SIZE);
 
-                            std::cout << "Col: " << col << " row: " << row << "\n";
-
                             if (row >= 0 && row < GRID_SIZE && col >= 0 && col < GRID_SIZE)
                             {
-                                gridMap[col][row] = 1;
+                                gridMap[row][col] = 1;
                                 pathUpdate = true;
-                                std::cout << "Blocked tile: (" << col << ", " << row << ")\n";
                             }
+
+                            std::cout << "Placed tower at col=" << col << ", row=" << row << "\n";
 
                             // and opens the little menu for the type of tower yayy
                             showTowerMenu = true;

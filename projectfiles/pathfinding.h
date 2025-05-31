@@ -7,6 +7,7 @@
 #include <queue>
 #include <algorithm>
 #include <cmath>
+#include <iostream>
 
 // decided to use a struct instead of a class due to the default public variables and members
 struct Node

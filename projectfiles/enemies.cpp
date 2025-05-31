@@ -102,13 +102,6 @@ Enemy::Enemy(int cat)
                 onGrid = true;
                 DrawText("Enemy on grid", 10, 400, 20, RED);
 
-                std::cout << "Y POS: " << posY << "\n"; // 746
-                std::cout << "GRID Y: " << GRID_Y << "\n"; // 120
-                std::cout << "CELL SIZE: " << CELL_SIZE << "\n"; // 33
-                std::cout << "screen height: " << screenHeight << "\n"; // 
-                std::cout << "screen width: " << screenWidth << "\n"; // 
-                std::cout << "FIRST EQ: " << posY - GRID_Y << "\n"; // -34
-
                 // turn pixel position to grid
                 int startX = abs((posX - GRID_X) / CELL_SIZE);
                 int startY = abs(((posY + 1) - GRID_Y) / CELL_SIZE);
@@ -116,11 +109,7 @@ Enemy::Enemy(int cat)
                 int goalX = GRID_SIZE / 2;
                 int goalY = 0;
 
-                std::cout << "START Y POS: " << startY << "\n";
-
                 path = AStarSearch(startX, startY, goalX, goalY);
-
-                std::cout << "Start: (" << startX << "," << startY << "), Goal: (" << goalX << "," << goalY << ")\n";
 
                 currentPathIndex = 0;
             }

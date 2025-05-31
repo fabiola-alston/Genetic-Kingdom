@@ -67,6 +67,9 @@ std::vector<Node> AStarSearch(int startX, int startY, int endX, int endY)
             return path;
         }
 
+        std::cout << "Checking node at (" << current.x << "," << current.y << ")\n";
+        std::cout << "gridMap[" << current.y << "][" << current.x << "] = " << gridMap[current.y][current.x] << "\n";
+
         // this checks all 4 directions
         std::vector<std::pair<int, int>> directions =
         {
