@@ -37,7 +37,7 @@ int main() {
     int lastPosYClicked = 0;
 
     // player gold variable from tower's variables
-    int playerGold = 30;
+    int playerGold = 100;
 
     InitWindow(screenWidth, screenHeight, "Genetic Kingdom");
     SetTargetFPS(60);
@@ -53,8 +53,8 @@ int main() {
     bool spawningWave = false;
     float waveCooldownTimer = 0.0f;
     // this is the time between the waves of enemies
-    float waveDelay = 5.0f;
-    int enemiesPerWave = 1;
+    float waveDelay = 15.0f;
+    int enemiesPerWave = 10;
     int enemiesSpawnedCurrWave = 0;
     // this is how often enemies spawn INSIDE of the wave
     float enemySpawnInterval = 0.5f; 
@@ -123,7 +123,7 @@ int main() {
                 {
                     DrawTexture(gridHoverTexture, x, y, WHITE);
 
-                    if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) and showTowerMenu == false)
+                    if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) and showTowerMenu == false and playerGold != 0)
                     {
                         if (IsTowerAtPosition(towers, x, y) == false)
                         {
@@ -149,6 +149,13 @@ int main() {
                             // fabi note: so it only lasts a frame, what you should do is a list of towers that need to stay drawn and have them get drawn every frame.
                     
                         }
+
+                        else if (playerGold == 0 or playerGold < 5)
+                        {
+
+                            showGoldWarning = true;
+                        }
+
 
                         else
                         {

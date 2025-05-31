@@ -10,7 +10,7 @@ Tower::Tower(int cat,int x, int y)
         setAttributes();
     }
 
-    int Tower::playerGold = 30;
+    int Tower::playerGold = 100;
 
     void Tower::setAttributes()
     {
