@@ -19,6 +19,7 @@ Enemy::Enemy(int cat)
             sprite = LoadImage("resources/ogro1.png");
             ImageResize(&sprite, 30, 30);
             hp = 25;
+            maxHP = 25;
             velocity = 2;
             resFlecha = 1;
             resMagia =  0;
@@ -33,6 +34,7 @@ Enemy::Enemy(int cat)
             sprite = LoadImage("resources/elfooscuro1.png");
             ImageResize(&sprite, 30, 30);
             hp = 30;
+            maxHP = 30;
             velocity = 4;
             resFlecha = 0;
             resMagia = 1;
@@ -47,6 +49,7 @@ Enemy::Enemy(int cat)
             sprite = LoadImage("resources/harpia1.png");
             ImageResize(&sprite, 30, 30);
             hp = 30;
+            maxHP = 30;
             velocity = 3;
             resFlecha = 1;
             resMagia = 1;
@@ -61,6 +64,7 @@ Enemy::Enemy(int cat)
             sprite = LoadImage("resources/mercenario1.png");
             ImageResize(&sprite, 30, 30);
             hp = 40;
+            maxHP = 40;
             velocity = 2;
             resFlecha = 0;
             resMagia = 1;
@@ -165,3 +169,28 @@ Enemy::Enemy(int cat)
         }
     }
 
+    void Enemy::healthBar()
+    {
+        float healthRatio = (float)(hp) / (float)(maxHP);
+        int barWidth = CELL_SIZE;
+        int barHeight = 5;
+        int barX = posX;
+        int barY = posY - 10;
+
+        DrawRectangle(barX, barY, barWidth * healthRatio, barHeight, GREEN);
+
+        DrawRectangle(barX + barWidth * healthRatio, barY, barWidth * (1 - healthRatio), barHeight, RED);
+    }
+
+    bool Enemy::isDead()
+    {
+        if (hp <= 0)
+        {
+            velocity = 0;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }

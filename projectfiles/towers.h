@@ -3,6 +3,9 @@
 
 #include "raylib.h"
 #include <iostream>
+#include "gridvars.h"
+#include <vector>
+#include "enemies.h"
 
 class Tower
 {
@@ -26,6 +29,8 @@ class Tower
         void drawImage();
         void moveTower();
         void upgrade();
+        void drawRange();
+        void attack(std::vector<Enemy>& enemies);
 
     private: 
         void setAttributes();

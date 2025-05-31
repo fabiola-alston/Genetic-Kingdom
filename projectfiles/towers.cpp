@@ -75,6 +75,15 @@ Tower::Tower(int cat,int x, int y)
         DrawTexture(spriteTex, posX, posY, WHITE);
     }
 
+    void Tower::drawRange()
+    {
+        int centerX = posX + CELL_SIZE/2;
+        int centerY = posY + CELL_SIZE/2;
+
+        DrawCircle(centerX, centerY, attackRange * (CELL_SIZE / 2), Fade(RED, 0.2f));
+    }
+
+
     void Tower::moveTower()
     {
         float interval = 1.0f;
@@ -85,6 +94,40 @@ Tower::Tower(int cat,int x, int y)
         {
             posX += 38 * velocity;
             timer -= interval;
+        }
+    }
+
+    void Tower::attack(std::vector<Enemy>& enemies)
+    {
+        float deltaTime = GetFrameTime();
+        timer += deltaTime;
+
+        if (timer >= timeRechargeAttack)
+        {
+            int centerX = posX + CELL_SIZE / 2;
+            int centerY = posY + CELL_SIZE / 2;
+
+            for (Enemy& enemy : enemies)
+            {
+                if (!enemy.isDead()) 
+                {
+                    int enemyCenterX = enemy.posX + CELL_SIZE / 2;
+                    int enemyCenterY = enemy.posY + CELL_SIZE / 2;
+
+                    float dx = enemyCenterX - centerX;
+                    float dy = enemyCenterY - centerY;
+                    float distance = sqrt(dx * dx + dy * dy);
+
+                    if (distance <= attackRange * CELL_SIZE)
+                    {
+                        enemy.hp -= damage;
+
+                        timer = 0.0f;
+                        break;
+                    }
+                }
+
+            }
         }
     }
 

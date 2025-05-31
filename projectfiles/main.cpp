@@ -224,14 +224,26 @@ int main() {
         // draw each created enemy
         for (Enemy& e : enemies)
         {
-            e.move();
-            e.drawImage(e.posX, e.posY);
+            if (!e.isDead())
+            {
+                e.move();
+                e.drawImage(e.posX, e.posY);
+                e.healthBar();
+            }
+
+            if (e.isDead() and !e.awardedGold)
+            {
+                Tower::playerGold += e.goldDeath;
+                e.awardedGold = true;
+            }
         }
 
         // similarly, draws each created tower
         for (Tower& t : towers)
         {
             t.drawImage();
+            t.drawRange();
+            t.attack(enemies);
         }
 
         DrawText(TextFormat("Last X Pos: %d Last Y Pos: %d", lastPosXClicked, lastPosYClicked), 10, 10, 20, WHITE);
