@@ -54,7 +54,7 @@ int main() {
     float waveCooldownTimer = 0.0f;
     // this is the time between the waves of enemies
     float waveDelay = 15.0f;
-    int enemiesPerWave = 10;
+    int enemiesPerWave = 3;
     int enemiesSpawnedCurrWave = 0;
     // this is how often enemies spawn INSIDE of the wave
     float enemySpawnInterval = 0.5f; 
@@ -91,6 +91,8 @@ int main() {
         ClearBackground(teal1);
 
         Vector2 mousePos = GetMousePosition();
+
+        playerGold = Tower::playerGold;
 
         // main island shadow
         DrawRectangle((screenWidth/2) - ((islandWidth+60)/2), (screenHeight/2) - ((islandHeight+60)/2), islandWidth+60, islandHeight+60, teal2); // shadow 1
@@ -211,6 +213,7 @@ int main() {
 
             if (enemiesSpawnedCurrWave >= enemiesPerWave)
             {
+                enemiesPerWave += 1;
                 spawningWave = false;
             }
         }
@@ -219,6 +222,7 @@ int main() {
         DrawText(TextFormat("Wave #%d currently in process", currentWave), 10, 60, 20, DARKPURPLE);
         DrawText(TextFormat("Enemies spawned: %d", enemiesSpawnedCurrWave), 10, 80, 20, DARKPURPLE);
         DrawText(TextFormat("Time: %d", gameTimer), 10, 100, 20, DARKPURPLE);
+        DrawText(TextFormat("Enemies slain: %d", Enemy::deadEnemiesTotal), 10, 120, 20, DARKPURPLE);
 
 
         // draw each created enemy
@@ -234,6 +238,7 @@ int main() {
             if (e.isDead() and !e.awardedGold)
             {
                 Tower::playerGold += e.goldDeath;
+                Enemy::deadEnemiesTotal += 1;
                 e.awardedGold = true;
             }
         }

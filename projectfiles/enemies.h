@@ -22,6 +22,7 @@ class Enemy
         int posY = 0;
         Texture2D spriteTex;
         bool onGrid = false;
+        static int deadEnemiesTotal;
 
         bool reachedGoal = false;
 

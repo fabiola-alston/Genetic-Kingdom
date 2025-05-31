@@ -9,6 +9,8 @@ Enemy::Enemy(int cat)
         setAttributes();
     }
 
+    int Enemy::deadEnemiesTotal = 0;
+
     void Enemy::setAttributes()
     {
         Image sprite;
