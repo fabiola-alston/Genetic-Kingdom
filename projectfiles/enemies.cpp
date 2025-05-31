@@ -10,6 +10,7 @@ Enemy::Enemy(int cat)
     }
 
     int Enemy::deadEnemiesTotal = 0;
+    int Enemy::victories = 0;
 
     void Enemy::setAttributes()
     {
@@ -167,6 +168,11 @@ Enemy::Enemy(int cat)
                     posY += (dir.y / distance) * step;
                 }
 
+            }
+
+            if (currentPathIndex >= static_cast<int>(path.size()))
+            {
+                reachedGoal = true;
             }
         }
     }

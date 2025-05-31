@@ -23,6 +23,8 @@
 extern int GRID_X;
 extern int GRID_Y;
 
+extern int score;
+
 
 extern int gridMap[GRID_SIZE][GRID_SIZE];
 extern bool pathUpdate;

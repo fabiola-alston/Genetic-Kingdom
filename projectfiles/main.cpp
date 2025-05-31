@@ -173,12 +173,12 @@ int main() {
                             Rectangle bounds = {(float)tower.posX, (float)tower.posY, (float)CELL_SIZE, (float)CELL_SIZE};
                             if (CheckCollisionPointRec(GetMousePosition(), bounds))
                             {
-                                if (playerGold >= 30)
+                                if (playerGold >= (tower.level * 10))
                                 {
                                     tower.upgrade();
-                                    Tower::playerGold-=30;
+                                    Tower::playerGold-=(tower.level * 10);
                                 }
-                                else if (playerGold < 30)
+                                else if (playerGold < (tower.level * 10))
                                 {
                                     showGoldWarning = true;
                                 }
@@ -244,6 +244,7 @@ int main() {
         DrawText(TextFormat("Enemies spawned: %d", enemiesSpawnedCurrWave), 10, 80, 20, DARKPURPLE);
         DrawText(TextFormat("Time: %d", gameTimer), 10, 100, 20, DARKPURPLE);
         DrawText(TextFormat("Enemies slain: %d", Enemy::deadEnemiesTotal), 10, 120, 20, DARKPURPLE);
+        DrawText(TextFormat("Enemies that won: %d", Enemy::victories), 10, 140, 20, DARKPURPLE);
 
 
         // draw each created enemy
@@ -260,7 +261,17 @@ int main() {
             {
                 Tower::playerGold += e.goldDeath;
                 Enemy::deadEnemiesTotal += 1;
+                score += e.category * 5;
                 e.awardedGold = true;
+            }
+
+            if (!e.isDead() and e.reachedGoal)
+            {
+                score -= e.category * 10;
+                Enemy::victories +=1 ;
+                e.reachedGoal = false;
+
+                e.hp = 0;
             }
         }
 
@@ -274,6 +285,10 @@ int main() {
 
         DrawText(TextFormat("Last X Pos: %d Last Y Pos: %d", lastPosXClicked, lastPosYClicked), 10, 10, 20, WHITE);
         DrawText(TextFormat("Gold: %d", playerGold), 10, 30, 20, WHITE);
+        DrawText(TextFormat("SCORE: %d", score), 1550, 10, 40, WHITE);
+
+        // GAME INSTRUCTIONS
+        DrawText("Place towers anywhere on the \n grid (prices in menu). \n Right click for upgrades. \n Tower Upgrades: \n Level 1 - 10G \n Level 2 - 20G \n Level 3 - 30G", 10, 600, 20, WHITE);
 
         // show tower menu code
         if (showTowerMenu)

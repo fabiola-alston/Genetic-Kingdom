@@ -3,6 +3,8 @@
 int GRID_X = 0;
 int GRID_Y = 0;
 
+int score = 0;
+
 int gridMap[GRID_SIZE][GRID_SIZE];
 bool pathUpdate = false;
 
