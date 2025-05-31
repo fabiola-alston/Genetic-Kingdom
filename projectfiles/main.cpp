@@ -165,6 +165,27 @@ int main() {
                             // (for future reference, this is where the action for "tower already placed" goes)
                         }
                     }
+                
+                    if (IsMouseButtonPressed(MOUSE_RIGHT_BUTTON))
+                    {
+                        for (Tower& tower : towers)
+                        {
+                            Rectangle bounds = {(float)tower.posX, (float)tower.posY, (float)CELL_SIZE, (float)CELL_SIZE};
+                            if (CheckCollisionPointRec(GetMousePosition(), bounds))
+                            {
+                                if (playerGold >= 30)
+                                {
+                                    tower.upgrade();
+                                    Tower::playerGold-=30;
+                                }
+                                else if (playerGold < 30)
+                                {
+                                    showGoldWarning = true;
+                                }
+                                
+                            }
+                        }
+                    }
                 }
 
                 else 
@@ -279,7 +300,7 @@ int main() {
             DrawText("Arquero (15G)", menuX + 20, menuY + 103, 18, WHITE);
 
             // when respective button gets clicked
-             if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
+            if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
             {
                 if (CheckCollisionPointRec(mousePos, arqueroButton))
                 {

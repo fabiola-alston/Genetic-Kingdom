@@ -14,6 +14,7 @@ Tower::Tower(int cat,int x, int y)
 
     void Tower::setAttributes()
     {
+        level = 0;
         Image sprite;
     
         // arquero
@@ -73,6 +74,7 @@ Tower::Tower(int cat,int x, int y)
     void Tower::drawImage()
     {
         DrawTexture(spriteTex, posX, posY, WHITE);
+        DrawText(TextFormat("Lvl. %d", level), posX + 5, posY - 10, 14, BLACK);
     }
 
     void Tower::drawRange()
@@ -133,6 +135,12 @@ Tower::Tower(int cat,int x, int y)
 
     void Tower::upgrade()
     {
-        level += 1; // obviouslyy gonna fix this later but it's 2:30 a.m. and i want to sleep
+        if (level < 3)  // limit to level 3
+        {
+            level++;
+            damage += 2;
+            attackRange += 1;
+            timeRechargeAttack *= 0.8f;  // 20% faster
+        }
     }
 
