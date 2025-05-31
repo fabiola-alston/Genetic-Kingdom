@@ -3,6 +3,10 @@
 
 #include <vector>
 #include "raylib.h"
+#include "gridvars.h"
+#include <queue>
+#include <algorithm>
+#include <cmath>
 
 // decided to use a struct instead of a class due to the default public variables and members
 struct Node
@@ -24,7 +28,7 @@ struct Node
     void calculateFCost()
     {
         // f = g + h 
-        costF = costG = costH;
+        costF = costG + costH;
     }
 
     // this allows us to compare two nodes, given that c++ wouldn't know what to do with them otherwise

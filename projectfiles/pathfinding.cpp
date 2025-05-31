@@ -1,8 +1,4 @@
 #include "pathfinding.h"
-#include "gridvars.h"
-#include <queue>
-#include <algorithm>
-#include <cmath>
 
 // calculating the manhattan distance heuristic
 int Heuristic(int x1, int y1, int x2, int y2)
@@ -12,7 +8,7 @@ int Heuristic(int x1, int y1, int x2, int y2)
 }
 
 // check if the position (coordinates) is available and walkable
-bool IsWalklable(int x, int y)
+bool IsWalkable(int x, int y)
 {
     bool walkableX = x >= 0 && x < GRID_SIZE;
     bool walkableY = y >= 0 && y < GRID_SIZE;

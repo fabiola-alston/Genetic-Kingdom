@@ -1,11 +1,18 @@
 #include "gridvars.h"
 
+int GRID_X = 0;
+int GRID_Y = 0;
+
 int gridMap[GRID_SIZE][GRID_SIZE];
+bool pathUpdate = false;
 
 Vector2 GridToPixel(int col, int row)
-    {
-        return {(float)(col * CELL_SIZE), (float)(row * CELL_SIZE)};
-    }
+{
+    return {
+        (float)(GRID_X + col * CELL_SIZE),
+        (float)(GRID_Y + row * CELL_SIZE)
+    };
+}
 
 Vector2 PixelToGrid(int x, int y)
 {

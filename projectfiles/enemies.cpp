@@ -19,7 +19,7 @@ Enemy::Enemy(int cat)
             sprite = LoadImage("resources/ogro1.png");
             ImageResize(&sprite, 30, 30);
             hp = 25;
-            velocity = 1;
+            velocity = 2;
             resFlecha = 1;
             resMagia =  0;
             resArt = 0;
@@ -33,7 +33,7 @@ Enemy::Enemy(int cat)
             sprite = LoadImage("resources/elfooscuro1.png");
             ImageResize(&sprite, 30, 30);
             hp = 30;
-            velocity = 3;
+            velocity = 4;
             resFlecha = 0;
             resMagia = 1;
             resArt = 0;
@@ -47,7 +47,7 @@ Enemy::Enemy(int cat)
             sprite = LoadImage("resources/harpia1.png");
             ImageResize(&sprite, 30, 30);
             hp = 30;
-            velocity = 2;
+            velocity = 3;
             resFlecha = 1;
             resMagia = 1;
             resArt = 2; 
@@ -94,24 +94,85 @@ Enemy::Enemy(int cat)
 
             posY -= deltaY;
 
-            int gridTop = 767; // 767 because the island sprite starts at 800, 800 - 33 which is the cell block size
+            int gridTop = 747; // 747 because the island sprite starts at 800, 800 - 33 which is the cell block size (+ a lil space for graphics)
 
-            // if the enemy hasn't reached the area where the grid starts
+            // if the enemy reaches the area where the grid starts
             if (posY <= gridTop)
             {
                 onGrid = true;
+                DrawText("Enemy on grid", 10, 400, 20, RED);
 
-                DrawText("Enemy on grid", 10, 400, 20, RED); 
+                std::cout << "Y POS: " << posY << "\n"; // 746
+                std::cout << "GRID Y: " << GRID_Y << "\n"; // 120
+                std::cout << "CELL SIZE: " << CELL_SIZE << "\n"; // 33
+                std::cout << "screen height: " << screenHeight << "\n"; // 
+                std::cout << "screen width: " << screenWidth << "\n"; // 
+                std::cout << "FIRST EQ: " << posY - GRID_Y << "\n"; // -34
 
-                // snap to grid
-                posY = ((posY - gridTop) / CELL_SIZE) * CELL_SIZE + gridTop;
+                // turn pixel position to grid
+                int startX = abs((posX - GRID_X) / CELL_SIZE);
+                int startY = abs(((posY + 1) - GRID_Y) / CELL_SIZE);
+
+                int goalX = GRID_SIZE / 2;
+                int goalY = 0;
+
+                std::cout << "START Y POS: " << startY << "\n";
+
+                path = AStarSearch(startX, startY, goalX, goalY);
+
+                std::cout << "Start: (" << startX << "," << startY << "), Goal: (" << goalX << "," << goalY << ")\n";
+
+                currentPathIndex = 0;
             }
         }
 
         // once the enemy reaches the grid area
         else
         {
+            if (pathUpdate)
+            {
+                int startX = abs((posX - GRID_X) / CELL_SIZE);
+                int startY = abs((posY - GRID_Y) / CELL_SIZE);
 
+                int goalX = GRID_SIZE / 2;
+                int goalY = 0;
+
+                path = AStarSearch(startX, startY, goalX, goalY);
+                currentPathIndex = 0;
+                std::cout << "Enemy recalculated path due to new tower!\n";
+            }
+
+            if (!path.empty() && currentPathIndex < static_cast<int>(path.size()))
+            {
+                Node nextTile = path[currentPathIndex];
+
+                Vector2 targetPos = GridToPixel(nextTile.x, nextTile.y);
+
+                float pixelsPerSecond = velocity * CELL_SIZE;
+                float step = pixelsPerSecond * GetFrameTime();
+
+                Vector2 dir = 
+                {
+                    targetPos.x - posX,
+                    targetPos.y - posY
+                };
+
+                float distance = sqrt(dir.x * dir.x + dir.y * dir.y);
+
+                if (distance < step)
+                {
+                    posX = targetPos.x;
+                    posY = targetPos.y;
+                    currentPathIndex++;
+                }
+
+                else
+                {
+                    posX += (dir.x / distance) * step;
+                    posY += (dir.y / distance) * step;
+                }
+
+            }
         }
     }
 

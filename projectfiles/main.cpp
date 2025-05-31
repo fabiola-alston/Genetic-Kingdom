@@ -23,20 +23,10 @@ bool IsTowerAtPosition(const std::vector<Tower>& towers, int x, int y)
 }
 
 int main() {
-    // screen size
-    const int screenWidth = 1800;
-    const int screenHeight = 900;
-
-    // island dimensions
-    const int islandWidth = 700;
-    const int islandHeight = 700;
-
-    // grid dimensions
-    const int GRID_X = (screenWidth/2) - ((CELL_SIZE*GRID_SIZE)/2);
-    const int GRID_Y = (screenHeight/2) - (CELL_SIZE*GRID_SIZE/2); 
-
-    // initialize grid array (from the heather file we made (: ) 
+    // initialize grid array from the heather file we made :)
     InitGridMap();
+    GRID_X = (screenWidth / 2) - ((CELL_SIZE * GRID_SIZE) / 2);
+    GRID_Y = (screenHeight / 2) - ((CELL_SIZE * GRID_SIZE) / 2);
 
     // game timer
     int gameTimer = 0;
@@ -63,8 +53,8 @@ int main() {
     bool spawningWave = false;
     float waveCooldownTimer = 0.0f;
     // this is the time between the waves of enemies
-    float waveDelay = 15.0f;
-    int enemiesPerWave = 10;
+    float waveDelay = 5.0f;
+    int enemiesPerWave = 1;
     int enemiesSpawnedCurrWave = 0;
     // this is how often enemies spawn INSIDE of the wave
     float enemySpawnInterval = 0.5f; 
@@ -141,6 +131,18 @@ int main() {
                             lastPosXClicked = x;
                             lastPosYClicked = y;
 
+                            int col = abs((lastPosXClicked - GRID_X) / CELL_SIZE);
+                            int row = abs((lastPosYClicked - GRID_Y) / CELL_SIZE);
+
+                            std::cout << "Col: " << col << " row: " << row << "\n";
+
+                            if (row >= 0 && row < GRID_SIZE && col >= 0 && col < GRID_SIZE)
+                            {
+                                gridMap[col][row] = 1;
+                                pathUpdate = true;
+                                std::cout << "Blocked tile: (" << col << ", " << row << ")\n";
+                            }
+
                             // and opens the little menu for the type of tower yayy
                             showTowerMenu = true;
 
@@ -192,6 +194,8 @@ int main() {
 
                 enemy.posX = screenWidth / 2;
                 enemy.posY = screenHeight - 10;
+
+                std::cout << "X" << enemy.posX << "Y" << enemy.posY << "\n";
 
                 enemies.push_back(enemy);
 
@@ -339,6 +343,8 @@ int main() {
             gameTimer++;
             gameFrameTimer = 0.0f;
         }
+
+        pathUpdate = false;
 
         EndDrawing();
 

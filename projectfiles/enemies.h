@@ -3,6 +3,8 @@
 
 #include "raylib.h"
 #include "gridvars.h"
+#include "pathfinding.h"
+#include <iostream>
 
 class Enemy
 {
@@ -18,6 +20,11 @@ class Enemy
         int posY = 0;
         Texture2D spriteTex;
         bool onGrid = false;
+
+        bool reachedGoal = false;
+
+        std::vector<Node> path;
+        int currentPathIndex = 0;
 
         Enemy(int cat);
 
